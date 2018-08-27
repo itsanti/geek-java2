@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="hw4.ClientController" stylesheets="@style.css">
+   <children>
+      <TextArea id="chatArea" editable="false" focusTraversable="false" prefHeight="348.0" prefWidth="590.0" snapToPixel="false" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <font>
+            <Font name="OpenSansEmoji" size="14.0" />
+         </font>
+      </TextArea>
+      <TextField id="msg" layoutX="6.0" layoutY="356.0" onKeyPressed="#handleEnterPressed" prefHeight="30.0" prefWidth="487.0" promptText="input msg" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Button id="btnSend" layoutX="495.0" layoutY="356.0" mnemonicParsing="false"
+              onKeyPressed="#handleEnterPressed" onMouseClicked="#handleSendMsg" prefHeight="30.0"
+              prefWidth="100.0" text="send msg" textAlignment="CENTER"
+              AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0"/>
+   </children>
+</AnchorPane>

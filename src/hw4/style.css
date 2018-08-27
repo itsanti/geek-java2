@@ -1,0 +1,15 @@
+/* https://docs.oracle.com/javase/9/docs/api/javafx/scene/doc-files/cssref.html */
+
+#btnSend {
+	-fx-box-shadow: 0px 10px 14px -7px;
+	-fx-box-shadow-color:#276873;
+	-fx-background-color:#599bb3;
+	-fx-border-radius:8px;
+	-fx-color:#ffffff;
+	-fx-text-shadow:0px 1px 0px;
+	-fx-text-shadow-color:#3d768a;
+}
+#btnSend:hover {
+	-fx-background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+	-fx-background-color:#408c99;
+}
