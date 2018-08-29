@@ -1,6 +1,6 @@
 /*
  */
-package hw5.exmpls.;
+package hw5.exmpls;
 
 class Caller implements Runnable {
   String msg;

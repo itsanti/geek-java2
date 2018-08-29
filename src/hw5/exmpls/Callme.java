@@ -1,4 +1,4 @@
-package hw5.exmpls.;
+package hw5.exmpls;
 
 class Callme {
   void call(String msg) {

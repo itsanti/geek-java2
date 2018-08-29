@@ -1,7 +1,4 @@
-package hw5.exmpls.;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+package hw5.exmpls;
 
 public class Join {
 
