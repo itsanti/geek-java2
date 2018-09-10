@@ -12,10 +12,16 @@ public class ClientHandler {
     private Socket socket;
     private DataInputStream  in; //поток ввода, используется UTF-кодировка
     private DataOutputStream out;//поток вывода, используется UTF-кодировка
+    private String clientName;
+
+    private static int counter = 0;
     
     public ClientHandler(MServer server, Socket socket)
     {
-       try{
+
+        try{
+            counter++;
+            this.clientName = "user" + Integer.toString(counter);
             this.server = server;
             this.socket = socket;
             this.in = new DataInputStream(socket.getInputStream());
@@ -37,9 +43,16 @@ public class ClientHandler {
                                    {
                                       break;
                                    }
-                                
-                                server.broadcastMsg(str);//Cервер разослал сообщение String str = in.readUTF() ВСЕМ подключенным клиентам
-                                   
+
+                                   if(str.startsWith("/w"))
+                                   {
+                                      String to = str.split(" ")[1];
+                                      String msg = str.split(" ")[2];
+                                      server.wisperMsg(this, to, msg); // сообщение участниками диалога
+
+                                   } else {
+                                       server.broadcastMsg("[" + this.clientName + "] " + str);//Cервер разослал сообщение String str = in.readUTF() ВСЕМ подключенным клиентам
+                                   }
                                 out.flush();
                             }
                          }
@@ -88,6 +101,10 @@ public class ClientHandler {
           ex.printStackTrace();
        }
     }//public ClientHandler
+
+    public String getClientName() {
+        return this.clientName;
+    }
     
     //если нужно послать сообщение клиенту
     public void sendMsg(String msg)

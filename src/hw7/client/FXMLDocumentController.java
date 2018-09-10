@@ -21,7 +21,7 @@ public class FXMLDocumentController implements Initializable {
     
     private DataInputStream  in; //поток ввода, используетс¤ UTF-кодировка
     private DataOutputStream out;//поток вывода, используетс¤ UTF-кодировка
-    
+
     @FXML
     private Button sendButton;
     
@@ -30,7 +30,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private TextField TextField;
-    
+
     @FXML
     private void sendMsg(ActionEvent event) {
        String str = TextField.getText();
@@ -51,6 +51,9 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //URL              - доступ к удалЄнному *.fxml
         //ResourceBundle   - доступ к ресурсам, упакованным в jar, если они есть
+
+
+
         try
         {
           //“ри кита при работе в сети:

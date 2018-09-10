@@ -1,7 +1,11 @@
 package hw7.server;
 
+import hw7.client.Client;
+
 import java.net.*;
 import java.io.*;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 public class MServer {
      
@@ -44,13 +48,26 @@ public class MServer {
     {
         clients.remove(client);
     }
-    
-    //отослать сообщение всем клиентам сразу     
+
+    //отослать сообщение всем клиентам сразу
     public void broadcastMsg(String msg)
     {
          for(ClientHandler client: clients)
          {
             client.sendMsg(msg);
          }
+    }
+
+    //отослать сообщение в диалоге
+    public void wisperMsg(ClientHandler from, String to, String msg)
+    {
+
+        for (ClientHandler client: clients) {
+            if(client.getClientName().equals(to)) {
+                client.sendMsg("[W from: " + from.getClientName() + "] " + msg);
+                break;
+            }
+        }
+        from.sendMsg("[W to: " + to + "] " + msg);
     }
 }//public class MServer
