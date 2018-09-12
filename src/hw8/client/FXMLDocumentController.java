@@ -21,6 +21,8 @@ import java.io.*;
 public class FXMLDocumentController implements Initializable {
     
     private boolean authorized;
+    private final static long AUTH_TIMEOUT = 120 * 1000;
+    private boolean isAuth = false;
     
     public void setAthorized(boolean authorized)
     {
@@ -112,67 +114,70 @@ public class FXMLDocumentController implements Initializable {
           socket = new Socket("localhost", 12345);
           in  = new DataInputStream(socket.getInputStream());
           out = new DataOutputStream(socket.getOutputStream());
-          
-          new Thread(new Runnable(){
-          
-          @Override 
-          public void run()
-          {
-                 try {
-                        while(true)
-                        {
-                            System.out.println("В цикле авторизации");    
-                         
-                            String str = in.readUTF();
-                                if(str.equals("/authok"))
-                                {
-                                    setAthorized(true);//авторизовались
-                                    break;
-                                }
-                        }
-                        while(true)
-                        {
-                                String str = in.readUTF();
-                                TextArea.appendText(str);
-                                TextArea.appendText("\n");
-                        }
-                 } catch (IOException ex) {
-                     ex.printStackTrace();
-                 }
-                 finally//освобождаем ресурсы
-                         {
-                            try
-                            {
-                                in.close();
-                                //out.close();   //в отдельный блок try - catch
-                                //socket.close();//в отдельный блок try - catch
-                            }
-                            catch(IOException ex)
-                            {
-                                ex.printStackTrace();
-                            }
-                            try
-                            {
-                               out.close();
-                            }
-                            catch(IOException ex)
-                            {
-                                ex.printStackTrace();
-                            }
-                            try
-                            {
-                                socket.close();
-                            }
-                            catch(IOException ex)
-                            {
-                                ex.printStackTrace();
-                            }
-                            
-                            setAthorized(false);//не авторизованы при разрыве соединения
-                            
-                         }//finally
-          }
-          }).start();
+
+
+              new Thread(new Runnable(){
+
+                  @Override
+                  public void run()
+                  {
+                      try {
+                          while(true)
+                          {
+                              System.out.println("В цикле авторизации");
+
+                              String str = in.readUTF();
+                              if(str.equals("/authok"))
+                              {
+                                  setAthorized(true);//авторизовались
+                                  isAuth = true;
+                                  break;
+                              }
+                          }
+                          while(true)
+                          {
+                              String str = in.readUTF();
+                              TextArea.appendText(str);
+                              TextArea.appendText("\n");
+                          }
+                      } catch (IOException ex) {
+                          ex.printStackTrace();
+                      }
+                      finally//освобождаем ресурсы
+                      {
+                          try
+                          {
+                              in.close();
+                              //out.close();   //в отдельный блок try - catch
+                              //socket.close();//в отдельный блок try - catch
+                          }
+                          catch(IOException ex)
+                          {
+                              ex.printStackTrace();
+                          }
+                          try
+                          {
+                              out.close();
+                          }
+                          catch(IOException ex)
+                          {
+                              ex.printStackTrace();
+                          }
+                          try
+                          {
+                              socket.close();
+                          }
+                          catch(IOException ex)
+                          {
+                              ex.printStackTrace();
+                          }
+
+                          setAthorized(false);//не авторизованы при разрыве соединения
+
+                      }//finally
+                  }
+              }).start();
+
         }
         catch(IOException ex)
         {
@@ -187,6 +192,19 @@ public class FXMLDocumentController implements Initializable {
         //URL              - доступ к удалённому *.fxml
         //ResourceBundle   - доступ к ресурсам, упакованным в jar, если они есть
         setAthorized(false);
+
+        new Thread(()->{
+            long start = System.currentTimeMillis();
+            while (!isAuth) {
+                if (System.currentTimeMillis() - start > AUTH_TIMEOUT + 2000) {
+                    System.out.println("Client not auth. Timeout exceeded.");
+                    if(socket!=null) sendMsg("/end");
+                    Platform.exit();
+                    System.exit(0);
+                    break;
+                }
+            }
+        }).start();
         
             Platform.runLater(() -> {
                 
